@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"log"
+	"log/slog"
 	"net/http"
 	"os"
 	"os/signal"
@@ -30,7 +31,7 @@ func main() {
 
 	go func() {
 		if err := app.Listen(":" + os.Getenv("SERVER_PORT")); err != nil && err != http.ErrServerClosed {
-			log.Fatalf("Error starting server: %v", err)
+			slog.Error("Error starting server: ", err)
 
 		}
 	}()
@@ -43,8 +44,8 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	if err := app.ShutdownWithContext(ctx); err != nil {
-		log.Fatalf("Server shutdown failed: %v", err)
+		slog.Error("Server shutdown failed: ", err)
 	}
-	log.Println("Server shutdown gracefully")
+	slog.Info("Server shutdown gracefully")
 
 }
