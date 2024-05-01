@@ -29,7 +29,7 @@ func main() {
 	})
 
 	go func() {
-		if err := app.Listen(":3000"); err != nil && err != http.ErrServerClosed {
+		if err := app.Listen(":" + os.Getenv("SERVER_PORT")); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("Error starting server: %v", err)
 
 		}
