@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"log"
 	"log/slog"
 	"net/http"
 	"os"
@@ -18,7 +17,7 @@ func init() {
 	// Load environment variables from .env file
 	err := godotenv.Load()
 	if err != nil {
-		log.Println("Error loading .env file, using default values.")
+		slog.Error("Error loading .env file, using default values ", err)
 	}
 }
 
@@ -28,9 +27,12 @@ func main() {
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Welcome to very over engineering API TODO App")
 	})
+	port := os.Getenv("SERVER_PORT")
 
 	go func() {
-		if err := app.Listen(":" + os.Getenv("SERVER_PORT")); err != nil && err != http.ErrServerClosed {
+		slog.Info("Server running ", "port", port)
+
+		if err := app.Listen(":" + port); err != nil && err != http.ErrServerClosed {
 			slog.Error("Error starting server: ", err)
 
 		}
