@@ -14,6 +14,8 @@ services:
       - COLLECTION_NAME=${COLLECTION_NAME}
     depends_on:
       - mongo
+    networks:
+      - todo-net
 
   mongo:
     image: mongo
@@ -24,3 +26,8 @@ services:
       - MONGO_INITDB_DATABASE=${DB_NAME}
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+    networks:
+      - todo-net
+      
+networks:
+  todo-net:
