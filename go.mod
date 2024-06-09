@@ -9,7 +9,15 @@ require (
 )
 
 require (
+	github.com/cenkalti/backoff/v4 v4.1.2 // indirect
+	github.com/hashicorp/errwrap v1.1.0 // indirect
+	github.com/hashicorp/go-multierror v1.1.1 // indirect
+	go.uber.org/atomic v1.7.0 // indirect
+)
+
+require (
 	github.com/andybalholm/brotli v1.1.0 // indirect
+	github.com/golang-migrate/migrate/v4 v4.17.1
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/klauspost/compress v1.17.8 // indirect
@@ -29,5 +37,4 @@ require (
 	golang.org/x/sync v0.7.0 // indirect
 	golang.org/x/sys v0.21.0 // indirect
 	golang.org/x/text v0.16.0 // indirect
-	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 )

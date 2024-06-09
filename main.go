@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"log/slog"
 	"net/http"
@@ -9,10 +10,13 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/cristianortiz/go-TodoAPI-cicd-tf-aws/db"
 	"github.com/gofiber/fiber/v2"
+	"github.com/golang-migrate/migrate/v4"
+	"github.com/golang-migrate/migrate/v4/database/mongodb"
+	_ "github.com/golang-migrate/migrate/v4/source/file" // Importa el driver de archivo
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // init() is called before main, ideal to load env vars before anything else
@@ -27,17 +31,20 @@ func init() {
 func main() {
 	//fiber app init
 	app := fiber.New()
-	// MongoDB Connection Setup
-	clientOptions := options.Client().ApplyURI(os.Getenv("MONGODB_URI"))
-	client, err := mongo.Connect(context.TODO(), clientOptions)
-	if err != nil {
-		log.Fatalf("Failed to connect to MongoDB: %v", err)
+	// MongoDB Connection
+	client := db.DBconnect()
+	if !db.CheckConnection() {
+		slog.Error("DB is not running")
+		return
 	}
-	db := client.Database(os.Getenv("DB_NAME"))
-
+	// migrations
+	mongoURI := os.Getenv("MONGODB_URI")     // Ensure it includes the dbname if not already part of URI
+	migrationsPath := "file://db/migrations" // Path to migrations directory
+	//routes
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Welcome to a very over engineering API TODO App")
 	})
+	migrateDatabase(client, mongoURI, migrationsPath)
 	port := os.Getenv("SERVER_PORT")
 
 	go func() {
@@ -61,4 +68,23 @@ func main() {
 	}
 	slog.Info("Server shutdown gracefully")
 
+}
+
+// migrateDatabase handles the migration process
+func migrateDatabase(db *mongo.Client, mongoURI, migrationsPath string) {
+	// Use "mongodb" as the prefix for the MongoDB driver, e.g., "mongodb://localhost:27017/dbname"
+	mongoDriver, err := mongodb.WithInstance(db, &mongodb.Config{})
+	if err != nil {
+		log.Fatalf("Failed to create MongoDB driver instance: %v", err)
+	}
+
+	m, err := migrate.NewWithDatabaseInstance(migrationsPath, os.Getenv("DB_NAME"), mongoDriver)
+	if err != nil {
+		log.Fatalf("Failed to initialize migrate instance: %v", err)
+	}
+
+	if err := m.Up(); err != nil && err != migrate.ErrNoChange {
+		log.Fatalf("Failed to apply migrations: %v", err)
+	}
+	fmt.Println("Migrations applied successfully")
 }
