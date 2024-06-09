@@ -12,7 +12,6 @@ RUN go mod download
 # https://docs.docker.com/reference/dockerfile/#copy
 COPY *.go ./
 #buil the go app
-# Build
 RUN CGO_ENABLED=0 GOOS=linux go build -o /todo-api
 
 # Optional:

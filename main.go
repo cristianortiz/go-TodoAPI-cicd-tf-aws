@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"log"
 	"log/slog"
 	"net/http"
 	"os"
@@ -10,6 +11,8 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // init() is called before main, ideal to load env vars before anything else
@@ -24,8 +27,16 @@ func init() {
 func main() {
 	//fiber app init
 	app := fiber.New()
+	// MongoDB Connection Setup
+	clientOptions := options.Client().ApplyURI(os.Getenv("MONGODB_URI"))
+	client, err := mongo.Connect(context.TODO(), clientOptions)
+	if err != nil {
+		log.Fatalf("Failed to connect to MongoDB: %v", err)
+	}
+	db := client.Database(os.Getenv("DB_NAME"))
+
 	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Welcome to very over engineering API TODO App")
+		return c.SendString("Welcome to a very over engineering API TODO App")
 	})
 	port := os.Getenv("SERVER_PORT")
 
