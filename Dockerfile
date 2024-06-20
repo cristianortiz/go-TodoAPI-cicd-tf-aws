@@ -3,7 +3,7 @@ FROM golang:1.22
 #set working directory inside container
 WORKDIR /app
 #copy go mod and go sum
-COPY go.mod  go.sum ./
+COPY go.mod  go.sum  ./
 
 #downlod depedencies
 RUN go mod download
@@ -11,6 +11,13 @@ RUN go mod download
 # Copy the source code. Note the slash at the end, as explained in
 # https://docs.docker.com/reference/dockerfile/#copy
 COPY *.go ./
+
+#COPY .env ./
+
+# Copy the db/migrations directory
+COPY database/migrations database/migrations
+
+
 #buil the go app
 RUN CGO_ENABLED=0 GOOS=linux go build -o /todo-api
 
