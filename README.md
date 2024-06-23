@@ -4,4 +4,4 @@ Example project to study deployment of Go apps usign terraform as IaC tool, Gith
 
 ## Project description
 
-This API is an example project, the basic idea is an app to manage projects, define a project team, the roles of any members of a project team, and finnaly to assign and manage tasks for every team member inside the project
+This API is an example project, the basic idea is an app to manage projects, define a project owner and team members, to assign roles of any members of a project team, and finnaly to assign and manage tasks for every team member inside the project

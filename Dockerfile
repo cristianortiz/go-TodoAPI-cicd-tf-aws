@@ -12,7 +12,7 @@ RUN go mod download
 # https://docs.docker.com/reference/dockerfile/#copy
 COPY *.go ./
 
-#COPY .env ./
+COPY .env ./
 
 # Copy the db/migrations directory
 COPY database/migrations database/migrations

@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
 	"log/slog"
 	"net/http"
 	"os"
@@ -11,8 +10,6 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/golang-migrate/migrate/v4"
-	"github.com/golang-migrate/migrate/v4/database/mongodb"
 	_ "github.com/golang-migrate/migrate/v4/source/file" // Importa el driver de archivo
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -41,9 +38,7 @@ func main() {
 		slog.Error("DB is not running")
 		return
 	}
-	// migrations
-	migrationsPath := "file:///app/database/migrations"
-	migrateDatabase(client, os.Getenv("DB_NAME"), migrationsPath) // Path to migrations directory
+
 	//routes
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Welcome to a very over engineering API TODO App")
@@ -72,27 +67,6 @@ func main() {
 	}
 	slog.Info("Server shutdown gracefully")
 
-}
-
-// migrateDatabase handles the migration process
-func migrateDatabase(db *mongo.Client, dbName, migrationsPath string) {
-	// Use "mongodb" as the prefix for the MongoDB driver, e.g., "mongodb://localhost:27017/dbname"
-	mongoDriver, err := mongodb.WithInstance(db, &mongodb.Config{
-		DatabaseName: dbName,
-	})
-	if err != nil {
-		log.Fatalf("Failed to create MongoDB driver instance: %v", err)
-	}
-
-	m, err := migrate.NewWithDatabaseInstance(migrationsPath, dbName, mongoDriver)
-	if err != nil {
-		log.Fatalf("Failed to initialize migrate instance: %v", err)
-	}
-
-	if err := m.Up(); err != nil && err != migrate.ErrNoChange {
-		log.Fatalf("Failed to apply migrations: %v", err)
-	}
-	fmt.Println("Migrations applied successfully")
 }
 
 func DBconnect() (*mongo.Client, error) {
