@@ -34,8 +34,9 @@ func main() {
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Welcome to a very over engineering API TODO App")
 	})
-
-	app.Post("/user", handlers.CreateUserHandler)
+	//grouping user endpoints
+	user := app.Group("/v1")
+	user.Post("/user", handlers.CreateUserHandler)
 
 	port := os.Getenv("SERVER_PORT")
 
