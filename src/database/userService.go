@@ -23,6 +23,6 @@ func CreateUser(db *mongo.Database, user *models.User) (*models.User, error) {
 
 		return nil, err
 	}
-	slog.Info("msg", "new user created", "id", result.InsertedID)
+	slog.Info("new user created", "id", result.InsertedID)
 	return user, nil
 }
