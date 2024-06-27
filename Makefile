@@ -1,11 +1,11 @@
 build:
 	CGO_ENABLED=0 env GOOS=linux go build -o bin/todoAPI
 #builnd an run the app locally
-run-go: build
+run: build
 	./bin/todoAPI
-#run the APi with docker
-run:
+#run mongoDB with docker
+mongo:
 	docker compose up --build -d
-#stop the app stopping docker
+#stop mongo container
 stop:
 	docker compose down

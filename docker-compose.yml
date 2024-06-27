@@ -1,26 +1,26 @@
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: todo-api
-    ports:
-      - "${SERVER_PORT}:${SERVER_PORT}"
-    environment:
-      - SERVER_PORT=${SERVER_PORT}
-      - MONGO_URI=${MONGO_URI}
-      - MONGO_PORT=${MONGO_PORT}
-      - MONGO_HOST=mongo
-      - MONGO_USERNAME=${MONGO_USERNAME}
-      - MONGO_PASSWORD=${MONGO_PASSWORD}
-      - DB_NAME=${DB_NAME}
-      - COLLECTION_NAME=${COLLECTION_NAME}
-      - MONGO_OPTIONS=${MONGO_OPTIONS}
+  # app:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: todo-api
+  #   ports:
+  #     - "${SERVER_PORT}:${SERVER_PORT}"
+  #   environment:
+  #     - SERVER_PORT=${SERVER_PORT}
+  #     - MONGO_URI=${MONGO_URI}
+  #     - MONGO_PORT=${MONGO_PORT}
+  #     - MONGO_HOST=mongo
+  #     - MONGO_USERNAME=${MONGO_USERNAME}
+  #     - MONGO_PASSWORD=${MONGO_PASSWORD}
+  #     - DB_NAME=${DB_NAME}
+  #     - COLLECTION_NAME=${COLLECTION_NAME}
+  #     - MONGO_OPTIONS=${MONGO_OPTIONS}
 
-    depends_on:
-      - mongo
-    networks:
-      - todo-net
+  #   depends_on:
+  #     - mongo
+  #   networks:
+  #     - todo-net
 
   mongo:
     image: mongo
