@@ -17,7 +17,7 @@ func ValidationMiddleware[T any](model T) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		// parse request body inputs into struct model
 		if err := c.BodyParser(model); err != nil {
-			return c.Status(http.StatusBadRequest).JSON(fiber.Map{"error": "Invalid request body"})
+			return c.Status(http.StatusBadRequest).JSON(fiber.Map{"error": "errors in body parameters"})
 		}
 		//validate struct model using ValidatiosnStruct
 		validationErrors, err := models.ValidateStruct(model)

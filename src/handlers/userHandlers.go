@@ -21,17 +21,17 @@ func CreateUserHandler(c *fiber.Ctx) error {
 	user := c.Locals("validatedModel").(*models.User)
 
 	//log the parsed and already validated body data
-	slog.Info("createUser Request", "body:", user)
+	slog.Info("createUser Request", "user:", user)
 	// password encryption
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.PasswordHash), bcrypt.DefaultCost)
 	if err != nil {
-		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{"error": "Error encrypting password"})
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{"error": "error encrypting password"})
 	}
 	user.PasswordHash = string(hashedPassword)
 
 	createdUser, err := database.CreateUser(db, user)
 	if err != nil {
-		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{"error": "Error creating user"})
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{"error": "error creating user"})
 	}
 	return c.Status(http.StatusCreated).JSON(createdUser)
 }

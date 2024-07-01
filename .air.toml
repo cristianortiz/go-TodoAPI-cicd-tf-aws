@@ -1,0 +1,23 @@
+# Working directory
+root = "."
+
+[build]
+# Shell command to build your Fiber application
+cmd = "make run"
+# Binary file path
+bin = ".bin/todoAPI"
+# Full command to run the application (including environment variables)
+full_bin = "APP_ENV=dev APP_USER=air ./tmp/main"
+# File extensions to watch for changes
+include_ext = ["go", "tpl", "html"]
+# Exclude specific directories or files
+exclude_dir = ["assets", "tmp", "vendor"]
+delay = 1000 # ms
+stop_on_error = true
+log = "air_errors.log"
+
+[color]
+main = "magenta"
+watcher = "cyan"
+build = "yellow"
+runner = "green"
