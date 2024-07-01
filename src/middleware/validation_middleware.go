@@ -8,8 +8,12 @@ import (
 )
 
 // ValidationMiddleware uses model/validation for request struct fields validations
-// before endpoints handlers
-func ValidationMiddleware(model interface{}) fiber.Handler {
+// intercepting the htttp request before  it reaches the handlers and applyng the mentioned
+// validations
+func ValidationMiddleware[T any](model T) fiber.Handler {
+	//fibers expect that a Middleware returns a fiber.Handler type wich is a function whit this
+	//signature func(*Ctx)error, this handler is chained in HTTP request cycle, with access to context
+	//trough fiber.Context and in this case, performing the struct model validations specific action,
 	return func(c *fiber.Ctx) error {
 		// parse request body inputs into struct model
 		if err := c.BodyParser(model); err != nil {
@@ -21,8 +25,8 @@ func ValidationMiddleware(model interface{}) fiber.Handler {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"validation_errors": validationErrors})
 		}
 
-		//if validations passes the validated struct model  is stored in fiber context
-		//for make it available for use in the next handler
+		//if validations passes, the validated struct model  is stored in fiber context
+		//for make it available for being used in the next handler or middleware
 		c.Locals("validateModel", model)
 		//transfering control to the next handler or middleware on chain
 		return c.Next()

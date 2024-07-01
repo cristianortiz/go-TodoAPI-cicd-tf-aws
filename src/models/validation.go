@@ -16,7 +16,7 @@ func InitValidator() {
 // ValidateStruc: uses validations v10 library for struct fields validations,
 // take a interface as parameter, allowing any struct and validate their fields
 // based on the rules defined in every struct tag like, 'required' or 'email' etc
-func ValidateStruct(data interface{}) (fiber.Map, error) {
+func ValidateStruct[T any](data T) (fiber.Map, error) {
 	err := validate.Struct(data)
 	if err != nil {
 		if vallidationsErrors, ok := err.(validator.ValidationErrors); ok {
