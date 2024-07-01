@@ -9,7 +9,6 @@ COPY go.mod  go.sum  ./
 
 #downlod depedencies
 RUN go mod download
-
 # Copy the source code. Note the slash at the end, as explained in
 COPY  . ./
 
@@ -20,8 +19,6 @@ COPY  . ./
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o todo-api
 
 #RUN upx /todo-api
-
-
 
 #final stage
 FROM alpine:3.20
