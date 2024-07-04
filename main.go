@@ -31,10 +31,10 @@ func main() {
 	// MongoDB Connection
 	database.DBconnect()
 	defer database.Disconnect()
-	//initialize models struct validator
+	//initialize models struct validator,  applied via middleware
 	models.InitValidator()
 
-	//routes
+	//---------------routes-----------------------------------
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Welcome to a very over engineering API TODO App")
 	})
@@ -44,6 +44,7 @@ func main() {
 	//create user EP with struct fields validations
 	user.Post("/user", middleware.ValidationMiddleware(&models.User{}), handlers.CreateUserHandler)
 
+	//----------------------------------------------------------------------
 	port := os.Getenv("SERVER_PORT")
 
 	go func() {
