@@ -29,10 +29,12 @@ func main() {
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 	slog.SetDefault(logger)
 	// MongoDB Connection
-	database.DBconnect()
+	db := database.DBconnect()
 	defer database.Disconnect()
 	//initialize models struct validator,  applied via middleware
 	models.InitValidator()
+	//userRepository instance
+	userRepo := database.NewMongoUserRepository(db)
 
 	//---------------routes-----------------------------------
 	app.Get("/", func(c *fiber.Ctx) error {
@@ -42,7 +44,7 @@ func main() {
 	user := app.Group("/v1")
 
 	//create user EP with struct fields validations
-	user.Post("/user", middleware.ValidationMiddleware(&models.User{}), handlers.CreateUserHandler)
+	user.Post("/user", middleware.ValidationMiddleware(&models.User{}), handlers.CreateUserHandler(userRepo))
 
 	//----------------------------------------------------------------------
 	port := os.Getenv("SERVER_PORT")

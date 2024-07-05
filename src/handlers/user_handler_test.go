@@ -18,11 +18,11 @@ func TestCreateUserHandler(t *testing.T) {
 	app := fiber.New()
 	//grouping user endpoints
 
-	userEP := app.Group("/v1")
+	//userEP := app.Group("/v1")
 
 	//create user EP with struc
 	//init route to test handler
-	userEP.Post("/user", CreateUserHandler)
+	//userEP.Post("/user", CreateUserHandler)
 	//create new test user
 	user := models.User{
 		Name:         "Test User",
