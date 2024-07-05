@@ -17,9 +17,17 @@ func CreateUserHandler(ur database.UserRepository) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		slog.SetDefault(logger)
 
-		//get user struct model validates trough  ValidationMiddleware from fiber context
-		user := c.Locals("validatedModel").(*models.User)
+		// Obtener el modelo validado del contexto
+		validatedUser := c.Locals("validatedModel")
+		if validatedUser == nil {
+			return c.Status(http.StatusBadRequest).JSON(fiber.Map{"error": "Validated model is missing"})
+		}
 
+		// Convertir el modelo validado a *models.User
+		user, ok := validatedUser.(*models.User)
+		if !ok {
+			return c.Status(http.StatusInternalServerError).JSON(fiber.Map{"error": "Invalid model type"})
+		}
 		//log the parsed and already validated body data
 		slog.Info("createUser Request", "user:", user)
 		// password encryption

@@ -27,7 +27,7 @@ func ValidationMiddleware[T any](model T) fiber.Handler {
 
 		//if validations passes, the validated struct model  is stored in fiber context
 		//for make it available for being used in the next handler or middleware
-		c.Locals("validateModel", model)
+		c.Locals("validatedModel", model)
 		//transfering control to the next handler or middleware on chain
 		return c.Next()
 	}
