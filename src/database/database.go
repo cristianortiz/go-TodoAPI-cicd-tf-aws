@@ -18,14 +18,6 @@ var (
 	mongoDatabase     *mongo.Database
 )
 
-// type DBconn struct{
-// 	clientInstance    *mongo.Client
-// 	clientInstanceErr error
-// 	mongoOnce         sync.Once
-// 	mongoDatabase     *mongo.Database
-
-// }
-
 // DBconnect returns single mongoBD connection instance
 func DBconnect() *mongo.Database {
 	mongoOnce.Do(func() {

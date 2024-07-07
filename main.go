@@ -12,6 +12,7 @@ import (
 	"github.com/cristianortiz/go-TodoAPI-cicd-tf-aws/src/handlers"
 	"github.com/cristianortiz/go-TodoAPI-cicd-tf-aws/src/middleware"
 	"github.com/cristianortiz/go-TodoAPI-cicd-tf-aws/src/models"
+	"github.com/cristianortiz/go-TodoAPI-cicd-tf-aws/src/services"
 	"github.com/gofiber/fiber/v2"
 	_ "github.com/golang-migrate/migrate/v4/source/file" // Importa el driver de archivo
 	"github.com/joho/godotenv"
@@ -31,10 +32,12 @@ func main() {
 	// MongoDB Connection
 	db := database.DBconnect()
 	defer database.Disconnect()
-	//initialize models struct validator,  applied via middleware
+	//initialize models struct fields validator,  applied via middleware
 	models.InitValidator()
-	//userRepository instance
+	//userRepository instance and injected with db MongoDB Database
 	userRepo := database.NewMongoUserRepository(db)
+	//create userService instance to be injected with userRepo struct
+	userService := services.NewUserService(userRepo)
 
 	//---------------routes-----------------------------------
 	app.Get("/", func(c *fiber.Ctx) error {
@@ -43,8 +46,8 @@ func main() {
 	//grouping user endpoints
 	user := app.Group("/v1")
 
-	//create user EP with struct fields validations
-	user.Post("/user", middleware.ValidationMiddleware(&models.User{}), handlers.CreateUserHandler(userRepo))
+	//create user EP with struct fields validations, and injected with userService
+	user.Post("/user", middleware.ValidationMiddleware(&models.User{}), handlers.CreateUserHandler(userService))
 
 	//----------------------------------------------------------------------
 	port := os.Getenv("SERVER_PORT")
