@@ -1,4 +1,4 @@
-package handlers
+package handlers_test
 
 import (
 	"bytes"
@@ -10,25 +10,53 @@ import (
 	"github.com/cristianortiz/go-TodoAPI-cicd-tf-aws/src/models"
 	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
+
+// userService mock
+type MockUserService struct {
+	mock.Mock
+}
+
+// mocking createUser service method
+func (m *MockUserService) CreateUser(user *models.User) (*models.User, error) {
+	args := m.Called(user)
+	return args.Get(0).(*models.User), args.Error(1)
+}
+
+func (m *MockUserService) GetUserByID(userID primitive.ObjectID) (*models.User, error) {
+	args := m.Called(userID)
+	return args.Get(0).(*models.User), args.Error(1)
+}
+func (m *MockUserService) AllUsers() ([]*models.User, error) {
+	args := m.Called()
+	return args.Get(0).([]*models.User), args.Error(1)
+}
+
+func (m *MockUserService) FindUserByEmail(email string) (*models.User, error) {
+	args := m.Called(email)
+	return args.Get(0).(*models.User), args.Error(1)
+}
 
 // createUserHandler test
 func TestCreateUserHandler(t *testing.T) {
 	//new app fiber
 	app := fiber.New()
-	//grouping user endpoints
+	//create mock user service
+	mockUserService := new(MockUserService)
 
-	//userEP := app.Group("/v1")
-
-	//create user EP with struc
-	//init route to test handler
-	//userEP.Post("/user", CreateUserHandler)
-	//create new test user
-	user := models.User{
+	user := &models.User{
 		Name:         "Test User",
 		Email:        "test@example.com",
 		PasswordHash: "password123",
 	}
+	//config mock to return test user data
+	mockUserService.On("CreateUser", mock.AnythingOfType("*models.User")).Return(user, nil)
+
+	//register handler with user service mock
+	//app.Post("/user", handlers.CreateUserHandler(mockUserService))
+
 	// parse uset to JSON
 	userJSON, _ := json.Marshal(user)
 

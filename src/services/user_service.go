@@ -48,3 +48,6 @@ func (s *UserService) AllUsers() ([]*models.User, error) {
 func (s *UserService) GetUserByID(userID primitive.ObjectID) (*models.User, error) {
 	return s.repo.GetUserByID(userID)
 }
+func (s *UserService) FindUserByEmailUserByEmail(email string) (*models.User, error) {
+	return s.repo.FindUserByEmail(email)
+}
