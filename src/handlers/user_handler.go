@@ -14,7 +14,7 @@ var logger = slog.New(slog.NewJSONHandler(os.Stdout, nil))
 
 // CreateUserHandler receive the http request, in this case after validateMiddleware
 // interception to body fields validations, then acces service layer methods
-func CreateUserHandler(us *services.UserService) fiber.Handler {
+func CreateUserHandler(us services.UserServiceIf) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		slog.SetDefault(logger)
 
