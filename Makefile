@@ -9,3 +9,8 @@ mongo:
 #stop mongo container
 stop:
 	docker compose down
+test:
+	go test -v ./...
+tcover:
+	go test -v ./... -coverprofile=c.out | go tool cover -html=c.out
+    

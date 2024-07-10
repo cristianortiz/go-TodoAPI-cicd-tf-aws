@@ -9,7 +9,15 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// userService is the implementation of UserServiceIf interface,
+// UserServiceInterface define los métodos que debe implementar el servicio de usuario
+type UserServiceIf interface {
+	CreateUser(user *models.User) (*models.User, error)
+	// GetUserByID(userID primitive.ObjectID) (*models.User, error)
+	// FindUserByEmail(email string) (*models.User, error)
+	// AllUsers() ([]*models.User, error)
+}
+
+// userService is the implementation of UserServiceIf interface,si
 // and uses the userRepositoryIf interface to acces and operates with the DB
 type UserService struct {
 	repo repository.UserRepositoryIf
