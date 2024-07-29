@@ -55,6 +55,7 @@ func TestCreateUserHandler(t *testing.T) {
 		Name:         "Test User",
 		Email:        "test@example.com",
 		PasswordHash: "password123",
+		ID:           primitive.NewObjectID(),
 	}
 	//config mock to return test user data
 	mockUserService.On("CreateUser", mock.AnythingOfType("*models.User")).Return(user, nil)
@@ -78,6 +79,6 @@ func TestCreateUserHandler(t *testing.T) {
 	dec.Decode(&createdUser)
 	assert.Equal(t, user.Name, createdUser.Name)
 	assert.Equal(t, user.Email, createdUser.Email)
-	//assert.NotEmpty(t, createdUser.ID)
+	assert.NotEmpty(t, createdUser.ID)
 
 }

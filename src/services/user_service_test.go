@@ -19,6 +19,10 @@ func (m *MockUserRepository) CreateUser(user *models.User) (*models.User, error)
 	args := m.Called(user)
 	return args.Get(0).(*models.User), args.Error(1)
 }
+func (m *MockUserRepository) CreateUserMock(user *models.User) (*models.User, error) {
+	args := m.Called(user)
+	return args.Get(0).(*models.User), args.Error(1)
+}
 
 func (m *MockUserRepository) GetUserByID(userID primitive.ObjectID) (*models.User, error) {
 	args := m.Called(userID)
@@ -43,6 +47,7 @@ func TestServiceCreateUser(t *testing.T) {
 		Name:         "Test User",
 		Email:        "test@example.com",
 		PasswordHash: "password123",
+		ID:           primitive.NewObjectID(),
 	}
 	//config userRepository mock
 	mockRepo := new(MockUserRepository)
@@ -56,8 +61,9 @@ func TestServiceCreateUser(t *testing.T) {
 	createdUser, err := userService.CreateUser(user)
 	//check that any error wa returned
 	assert.NoError(t, err)
-	//check if the new created user email, is the same of user test
+	//check if the new created user email, and ID are the same of user test
 	assert.Equal(t, user.Email, createdUser.Email)
+	assert.NotEmpty(t, createdUser.ID)
 
 	//check that the mock was called as expected
 	mockRepo.AssertExpectations(t)

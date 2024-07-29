@@ -12,9 +12,9 @@ import (
 // UserServiceInterface define los métodos que debe implementar el servicio de usuario
 type UserServiceIf interface {
 	CreateUser(user *models.User) (*models.User, error)
-	// GetUserByID(userID primitive.ObjectID) (*models.User, error)
-	// FindUserByEmail(email string) (*models.User, error)
-	// AllUsers() ([]*models.User, error)
+	GetUserByID(userID primitive.ObjectID) (*models.User, error)
+	FindUserByEmail(email string) (*models.User, error)
+	AllUsers() ([]*models.User, error)
 }
 
 // userService is the implementation of UserServiceIf interface,si
@@ -56,6 +56,6 @@ func (s *UserService) AllUsers() ([]*models.User, error) {
 func (s *UserService) GetUserByID(userID primitive.ObjectID) (*models.User, error) {
 	return s.repo.GetUserByID(userID)
 }
-func (s *UserService) FindUserByEmailUserByEmail(email string) (*models.User, error) {
+func (s *UserService) FindUserByEmail(email string) (*models.User, error) {
 	return s.repo.FindUserByEmail(email)
 }
