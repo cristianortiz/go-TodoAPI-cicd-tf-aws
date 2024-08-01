@@ -51,7 +51,7 @@ func TestServiceCreateUser(t *testing.T) {
 	}
 	//config userRepository mock
 	mockRepo := new(MockUserRepository)
-	//simulate that a user with that email is nost exists
+	//simulate that a user with that email is not exists
 	mockRepo.On("FindUserByEmail", user.Email).Return(nil, nil)
 	//simulate that was succesfully created
 	mockRepo.On("CreateUser", mock.AnythingOfType("*models.User")).Return(user, nil)

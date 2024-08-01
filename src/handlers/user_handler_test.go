@@ -63,7 +63,7 @@ func TestCreateUserHandler(t *testing.T) {
 	//register handler with user service mock and middleware
 	app.Post("/v1/user", middleware.ValidationMiddleware(&models.User{}), handlers.CreateUserHandler(mockUserService))
 
-	// parse uset to JSON
+	// parse user to JSON
 	userJSON, _ := json.Marshal(user)
 
 	//create a test POST request
