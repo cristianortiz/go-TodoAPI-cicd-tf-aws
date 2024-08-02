@@ -34,8 +34,8 @@ jobs:
     steps:
       - name: Deploy to environment
         run: |
-          if [[${{github.ref}} == 'refs/head/develop']]; then
+          if [["${{github.ref}}" == 'refs/head/develop']]; then
             echo "Deploying to develop enviroment..."
-          elif [[${{github.ref}} == 'refs/heads/staging']]; then
+          elif ["[${{github.ref}}" == 'refs/heads/staging']]; then
             echo "Deploying to staging enviroment..."
           fi
