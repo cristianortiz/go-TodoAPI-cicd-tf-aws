@@ -1,6 +1,7 @@
 name: ci-cd-pipeline
 
 on:
+  workflow_dispatch: #this allows manually pipeline triggering
   push:
     branches:
       - develop
