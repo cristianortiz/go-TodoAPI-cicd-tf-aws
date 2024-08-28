@@ -22,7 +22,7 @@ func main() {
 	// Load environment variables from .env file
 	err := godotenv.Load(".env")
 	if err != nil {
-		slog.Error("Error loading .env file, using default values ", err)
+		slog.Error("Error loading .env file, using default values ", "error", err.Error())
 	}
 	//fiber app init
 	app := fiber.New()
@@ -56,7 +56,7 @@ func main() {
 		slog.Info("Server running ", "port", port)
 
 		if err := app.Listen(":" + port); err != nil && err != http.ErrServerClosed {
-			slog.Error("Error starting server: ", err)
+			slog.Error("error", "Error starting server: ", err.Error())
 
 		}
 	}()
@@ -69,7 +69,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	if err := app.ShutdownWithContext(ctx); err != nil {
-		slog.Error("Server shutdown failed: ", err)
+		slog.Error("error", "Server shutdown failed: ", err.Error())
 	}
 	slog.Info("Server shutdown gracefully")
 
