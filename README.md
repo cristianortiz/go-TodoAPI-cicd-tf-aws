@@ -14,7 +14,7 @@ We are goin to use Terraform to create and deploy the infra in AWS. The architec
 
 ## Prerequisites
 
-* AWS account with administrator privileges, also create an specific user for this projecto with all the needed permissions (policies)****
+* AWS account with administrator privileges, also create an specific user for this projecto with all the needed permissions (policies)
 * Terraform installed and configured with your AWS credentials.
 
 
@@ -23,8 +23,6 @@ Before geeting dirty is helpfull have a detailed plan about wich components will
 ```ultree
 terraform
 ├── backendSetup
-│   └── main.tf
-├── security_groups
 │   └── main.tf
 ├── vpc
 │   └── main.tf
@@ -107,6 +105,32 @@ resource "aws_dynamodb_table" "terraform-locks" {
 
 * **Define VPC:** Create a VPC (Virtual Private Cloud) in `terraform/vpc/main.tf`. Specify the IP range (CIDR) and configure routing options.
 * **Create Subnet:** Define a subnet within the VPC in `terraform/vpc/main.tf`. Specify the IP range (CIDR) and the availability zone (AZ) where the subnet will be deployed.
+  ```hcl
+  # VPC configuration
+resource "aws_vpc" "main" {
+  cidr_block = "10.0.0.0/16"
+
+  # Enable DNS hostnames and DNS resolution within the VPC
+  enable_dns_hostnames = true
+  enable_dns_support   = true
+
+  tags = {
+    Name = "todoAPI-vpc"
+  }
+}
+
+# Create a subnet for the API
+resource "aws_subnet" "api_subnet" {
+  vpc_id = aws_vpc.main.id
+  cidr_block = "10.0.1.0/24"
+  availability_zone = "us-east-1a"
+
+  tags = {
+    Name = "todoAPI-api-subnet"
+  }
+}
+
+  ```
 
 **3. Define Security Groups:**
 
