@@ -34,9 +34,8 @@ jobs:
     environment: ${{github.ref}} #branch name as enviroment
     steps:
       - name: Deploy to environment
-        run: |
-          if [[ ${{ github.ref }} == 'refs/heads/develop' ]]; then
-            echo "Deploying to develop environment..."
+        run: if [[ ${{ github.ref }} == 'refs/heads/develop' ]]; then
+          echo "Deploying to develop environment..."
           elif [[ ${{ github.ref }} == 'refs/heads/staging' ]]; then
-            echo "Deploying to staging environment..."
+          echo "Deploying to staging environment..."
           fi
