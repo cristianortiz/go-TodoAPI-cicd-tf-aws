@@ -1,0 +1,12 @@
+name: terraform-infrastructure
+
+on:
+  workflow_dispatch: #this allows manually pipeline triggering
+  push:
+    branches: [develop]
+    paths: ["terraform/**"] #the action will only run if there is a change to a file listed in terraform folder
+  pull_request:
+    branches: [develop]
+    paths: ["terraform/**"]
+
+jobs:

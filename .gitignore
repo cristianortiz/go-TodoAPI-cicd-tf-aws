@@ -1,2 +1,4 @@
 bin/
 *.out
+terraform/backendSetup/
+aws/
