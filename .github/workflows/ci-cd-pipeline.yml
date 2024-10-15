@@ -15,10 +15,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Go
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version: 1.22
 
@@ -34,8 +34,9 @@ jobs:
     environment: ${{github.ref}} #branch name as enviroment
     steps:
       - name: Deploy to environment
-        run: if [[ ${{ github.ref }} == 'refs/heads/develop' ]]; then
-          echo "Deploying to develop environment..."
+        run: |
+          if [[ ${{ github.ref }} == 'refs/heads/develop' ]]; then
+            echo "Deploying to develop environment..."
           elif [[ ${{ github.ref }} == 'refs/heads/staging' ]]; then
-          echo "Deploying to staging environment..."
+           echo "Deploying to staging environment..."
           fi
