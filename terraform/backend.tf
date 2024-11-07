@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket = "todoapi-tfbackend-bkt"
-    key = "vpc/terraform.tfstate"
+    key = "develop/terraform.tfstate"
     region = "us-east-1"
     
   }
