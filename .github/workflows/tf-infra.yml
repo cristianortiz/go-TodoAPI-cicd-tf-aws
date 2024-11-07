@@ -28,8 +28,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{secrets.AWS_REGION}}
 
-      - name: Terraform Init
-        run: terraform init -reconfigure
+      - name: Clean Terraform Cache
+        run: rm -rf .terraform .terraform.lock.hcl
+        working-directory: terraform/
+
+      - name: Terraform Init with Upgrade
+        run: terraform init -reconfigure -upgrade
         working-directory: terraform/
 
       - name: Terraform Validate
