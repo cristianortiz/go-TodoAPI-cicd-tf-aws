@@ -29,7 +29,7 @@ jobs:
           aws-region: ${{secrets.AWS_REGION}}
 
       - name: Terraform Init
-        run: terraform init
+        run: terraform init -reconfigure
         working-directory: terraform/
 
       - name: Terraform Validate
