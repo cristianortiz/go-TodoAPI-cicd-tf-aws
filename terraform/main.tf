@@ -2,7 +2,7 @@ provider "aws" {
     region = var.aws_region
 }
 
-#VPC input vars
+#VPC input variables, 
 module "vpc" {
     source = "./vpc"
     vpc_name = "go-todo-api-vpc"
