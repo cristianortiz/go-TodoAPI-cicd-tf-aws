@@ -10,7 +10,7 @@ on:
     paths: ["terraform/**"]
 
 jobs:
-  deploy:
+  terraform-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
