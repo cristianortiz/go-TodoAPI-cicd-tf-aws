@@ -1,6 +1,6 @@
 module "vpc" {
     source = "terraform-aws-modules/vpc/aws"
-    version = "~> 5.1"
+    version = "~> 5.15.0"
     name = "go-todo-api-vpc"
     cidr =  "10.0.0.0/16"
     azs = ["us-east-1a","us-east-1b","us-east-1c"]
