@@ -2,3 +2,5 @@ bin/
 *.out
 terraform/backendSetup/
 aws/
+terraform/.terraform/
+terraform/.terraform.lock.hcl
